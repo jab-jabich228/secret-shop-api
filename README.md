@@ -1,24 +1,83 @@
-# README
+Модели
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+1. Bomb 
 
-Things you may want to cover:
+у каждой бомбы есть:
 
-* Ruby version
+name — название
+damage — урон
+price — цена
+stock — количество
+potion_id — связанное зелье
 
-* System dependencies
+2. Potion
 
-* Configuration
+У каждого зелья есть:
 
-* Database creation
+name — название
+effect — эффект
+price — цена
+duration — длительность
 
-* Database initialization
+модели связаны, у одного зелья может быть несколько бомб, а каждая бомба связана с одним зельем (бомбы получают эффекты зелий)
 
-* How to run the test suite
+API-маршруты
 
-* Services (job queues, cache servers, search engines, etc.)
+для бомб сделал создание, просмотр, изменение и удаление. Для зелий только просмотр
 
-* Deployment instructions
+GET /api/bombs — Получить список всех бомб
 
-* ...
+GET /api/bombs/:id — Получить одну бомбу по ID
+
+POST /api/bombs — Создать новую бомбу
+
+PATCH /api/bombs/:id — Изменить существующую бомбу
+
+DELETE /api/bombs/:id — Удалить бомбу
+
+GET /api/potions — Получить список всех зелий
+
+GET /api/potions/:id — Получить одно зелье по ID
+
+Как запустить
+
+Нужно открыть терминал в папке проекта и выполнить:
+
+bundle install
+bin/rails db:prepare
+bin/rails db:seed
+bin/rails server
+
+После запуска можно открыть в браузере:
+
+http://localhost:3000/api/bombs
+
+http://localhost:3000/api/potions
+
+Там будут данные в формате JSON.
+
+Примеры запросов
+
+Получить все бомбы:
+
+curl http://localhost:3000/api/bombs
+
+Получить все зелья:
+
+curl http://localhost:3000/api/potions
+
+Создать новую бомбу:
+
+curl -X POST http://localhost:3000/api/bombs \
+  -H "Content-Type: application/json" \
+  -d '{"bomb":{"name":"Thunder Bomb","damage":120,"price":400,"stock":3,"potion_id":1}}'
+
+Изменить цену бомбы с ID 1:
+
+curl -X PATCH http://localhost:3000/api/bombs/1 \
+  -H "Content-Type: application/json" \
+  -d '{"bomb":{"price":500}}'
+
+Удалить бомбу с ID 1:
+
+curl -X DELETE http://localhost:3000/api/bombs/1
